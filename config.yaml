@@ -2,25 +2,48 @@
 # Tout ce qui change le contenu des vidéos se règle ici, sans toucher au code.
 
 channel:
-  # Thème de la chaîne : Claude invente un nouveau sujet dans ce thème à chaque exécution.
-  niche: "Faits fascinants et méconnus sur la science, l'histoire et la nature"
+  # Thème de la chaîne : Claude cherche un nouveau sujet (vrai et vérifié sur le web) dans ce thème à chaque exécution.
+  niche: >-
+    Droits méconnus, argent et astuces du quotidien en France, et psychologie des relations :
+    des infos vraies, vérifiables et utiles que la plupart des gens ignorent.
   language: "français"
-  # Ton et style du texte lu.
-  style: "Accroche choc dans la première phrase, rythme rapide, phrases courtes, chute surprenante à la fin."
-  # Durée visée de la voix off (secondes). Shorts : max 180 s, TikTok : max 10 min.
-  target_seconds: 45
+  # Pseudo affiché nulle part dans la vidéo, utilisé seulement pour la description.
+  handle: ""
+  # Durée visée de la voix off (secondes). Les vidéos d'exemple font ~80 s.
+  target_seconds: 75
+
+# Style visuel :
+#   nuit   : fond bleu nuit avec grille et halos, personnages en pâte à modeler 3D, cartes « interface » (comme la vidéo Thomas / fonds social)
+#   pastel : fonds colorés et rayons, personnages dessin animé plats (comme la vidéo Sabrina / dispute)
+style: "nuit"
 
 voice:
-  # Voix Microsoft Edge TTS (gratuites). Liste : `edge-tts --list-voices`
-  name: "fr-FR-HenriNeural"
-  rate: "+8%"
+  # elevenlabs : voix très naturelle (recommandé, clé ELEVENLABS_API_KEY) ; repli automatique sur edge si la clé manque.
+  # edge : voix Microsoft gratuite, correcte mais moins naturelle.
+  provider: "elevenlabs"
+  # ID d'une voix ElevenLabs (choisis une voix française dans la Voice Library et colle son ID ici).
+  elevenlabs_voice_id: "JBFqnCBsd6RMkjVDRZzb"
+  elevenlabs_model: "eleven_multilingual_v2"
+  edge_voice: "fr-FR-HenriNeural"
+  edge_rate: "+12%"
+
+images:
+  # gemini : meilleure qualité + personnages identiques d'un plan à l'autre (clé GEMINI_API_KEY).
+  # pollinations : gratuit, sans clé, qualité moyenne. Repli automatique si la clé Gemini manque.
+  provider: "gemini"
+  gemini_model: "gemini-2.5-flash-image"
+
+audio:
+  # Volume de la musique de fond (0-1) pendant que la voix parle, et des bruitages.
+  music_volume: 0.16
+  sfx_volume: 0.55
+  # Mets tes propres musiques libres de droits (.mp3) dans assets/music/ : elles seront tirées au sort.
+  # Sans fichier, une musique d'ambiance est générée automatiquement.
 
 video:
   width: 1080
   height: 1920
   fps: 30
-  # Nombre de mots affichés à la fois dans les sous-titres.
-  words_per_caption: 3
 
 publish:
   youtube: true

@@ -9,13 +9,14 @@ import argparse
 import json
 import shutil
 import sys
+import time
 import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
 
-from . import render, script_gen, tts, visuals
+from . import engine, images, script_gen, tts
 from .uploaders import tiktok, youtube
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -33,37 +34,23 @@ def save_history(history: list[dict]) -> None:
 
 
 def make_video(cfg: dict, history: list[dict], workdir: Path) -> tuple[script_gen.VideoScript, Path]:
-    v = cfg["video"]
-    script = script_gen.generate_script(cfg["channel"], [h["topic"] for h in history])
-    print(f"Sujet : {script.topic}\nTitre : {script.title}")
+    style = cfg.get("style", "nuit")
+    script = script_gen.generate_script(cfg["channel"], style, [h["topic"] for h in history])
+    print(f"Sujet : {script.topic}\nTitre : {script.title}\n{len(script.beats)} morceaux, {len(script.assets)} illustrations")
+    (workdir / "script.json").write_text(script.model_dump_json(indent=2), encoding="utf-8")
 
-    narration = " ".join(s.text.strip() for s in script.segments)
-    audio = workdir / "voice.mp3"
-    words = tts.synthesize(narration, cfg["voice"]["name"], cfg["voice"]["rate"], audio)
-    total = render.media_duration(audio)
+    assets = images.generate_assets(script, style, cfg["images"], workdir)
+    print(f"{len(assets)}/{len(script.assets)} illustrations prêtes")
 
-    # Durée de chaque plan proportionnelle à la longueur de son texte.
-    lengths = [len(s.text) for s in script.segments]
-    used_ids: set[int] = set()
-    segment_files = []
-    for i, seg in enumerate(script.segments):
-        duration = total * lengths[i] / sum(lengths) + (0.5 if i == len(script.segments) - 1 else 0)
-        clip = None
-        try:
-            clip = visuals.fetch_clip(seg.search_query, workdir / f"clip_{i}.mp4", used_ids)
-        except Exception as exc:  # une illustration manquante ne doit pas bloquer la vidéo
-            print(f"Pexels indisponible pour « {seg.search_query} » : {exc}")
-        out = workdir / f"seg_{i}.mp4"
-        render.render_segment(clip, duration, out, v["width"], v["height"], v["fps"])
-        segment_files.append(out)
-
-    subs = workdir / "subs.ass"
-    render.write_subtitles(words, subs, v["width"], v["height"], v["words_per_caption"])
+    narration = " ".join(b.text.strip() for b in script.beats)
+    voice = workdir / "voice.mp3"
+    words = tts.synthesize(narration, cfg["voice"], voice)
 
     OUTPUT.mkdir(exist_ok=True)
     final = OUTPUT / f"{datetime.now(timezone.utc):%Y%m%d-%H%M%S}.mp4"
-    render.assemble(segment_files, audio, subs, final, workdir)
-    print(f"Vidéo rendue : {final} ({render.media_duration(final):.1f} s)")
+    t0 = time.time()
+    duration = engine.build(script, words, voice, assets, style, cfg, final, workdir)
+    print(f"Vidéo rendue : {final} ({duration:.1f} s, montage en {time.time() - t0:.0f} s)")
     return script, final
 
 
