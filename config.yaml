@@ -1,0 +1,36 @@
+# Configuration de l'automatisation des Shorts / TikTok.
+# Tout ce qui change le contenu des vidéos se règle ici, sans toucher au code.
+
+channel:
+  # Thème de la chaîne : Claude invente un nouveau sujet dans ce thème à chaque exécution.
+  niche: "Faits fascinants et méconnus sur la science, l'histoire et la nature"
+  language: "français"
+  # Ton et style du texte lu.
+  style: "Accroche choc dans la première phrase, rythme rapide, phrases courtes, chute surprenante à la fin."
+  # Durée visée de la voix off (secondes). Shorts : max 180 s, TikTok : max 10 min.
+  target_seconds: 45
+
+voice:
+  # Voix Microsoft Edge TTS (gratuites). Liste : `edge-tts --list-voices`
+  name: "fr-FR-HenriNeural"
+  rate: "+8%"
+
+video:
+  width: 1080
+  height: 1920
+  fps: 30
+  # Nombre de mots affichés à la fois dans les sous-titres.
+  words_per_caption: 3
+
+publish:
+  youtube: true
+  tiktok: true
+  # YouTube : public | unlisted | private
+  youtube_privacy: "public"
+  youtube_category_id: "27"  # 27 = Éducation
+  # TikTok : PUBLIC_TO_EVERYONE | MUTUAL_FOLLOW_FRIENDS | FOLLOWER_OF_CREATOR | SELF_ONLY
+  # (une appli TikTok non auditée ne peut publier qu'en SELF_ONLY)
+  tiktok_privacy: "PUBLIC_TO_EVERYONE"
+
+# Nombre de vidéos générées et publiées à chaque exécution planifiée.
+videos_per_run: 1
