@@ -285,7 +285,7 @@ def render_caption(words: list[str], highlight: set[str], th: dict, width: int) 
     stroke = th["caption_stroke"]
     tokens = [w.upper() if th["caption_upper"] else w for w in words]
     tmp = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
-    space = tmp.textlength(" ", font=f)
+    space = tmp.textlength(" ", font=f) + 2 * stroke + 6
     rows, cur, cur_w = [], [], 0.0
     for raw, tok in zip(words, tokens):
         tw = tmp.textlength(tok, font=f)
