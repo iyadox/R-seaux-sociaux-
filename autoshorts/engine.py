@@ -14,11 +14,11 @@ from .tts import Word
 
 # Emplacements : (centre x, centre y, largeur max, hauteur max), en fraction de l'écran.
 SLOTS = {
-    "center": (0.50, 0.50, 0.72, 0.40),
-    "left": (0.28, 0.53, 0.48, 0.34),
-    "right": (0.72, 0.53, 0.48, 0.34),
-    "top": (0.50, 0.27, 0.55, 0.22),
-    "bottom": (0.50, 0.66, 0.60, 0.20),
+    "center": (0.50, 0.46, 0.70, 0.33),
+    "left": (0.28, 0.49, 0.46, 0.28),
+    "right": (0.72, 0.49, 0.46, 0.28),
+    "top": (0.50, 0.25, 0.55, 0.20),
+    "bottom": (0.50, 0.58, 0.55, 0.17),
 }
 POP_IN, POP_OUT, TRANSITION = 0.35, 0.18, 0.45
 

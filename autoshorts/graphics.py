@@ -43,14 +43,14 @@ def hex_rgb(h: str) -> tuple[int, int, int]:
 
 THEMES = {
     "nuit": {
-        "caption_upper": True, "caption_size": 74, "caption_y": 0.74, "caption_color": "#ffffff",
+        "caption_upper": True, "caption_size": 74, "caption_y": 0.765, "caption_color": "#ffffff",
         "caption_highlight": "#ff4d6d", "caption_stroke": 0,
         "card_bg": (22, 28, 74, 235), "card_border": (120, 140, 255, 90), "card_text": "#ffffff",
         "card_muted": "#9aa6e8", "good": "#2ee59d", "bad": "#ff4d6d", "neutral": "#ffc94d",
         "paper": True,
     },
     "pastel": {
-        "caption_upper": False, "caption_size": 86, "caption_y": 0.50, "caption_color": "#ffffff",
+        "caption_upper": False, "caption_size": 86, "caption_y": 0.765, "caption_color": "#ffffff",
         "caption_highlight": "#ffd400", "caption_stroke": 7,
         "card_bg": (255, 255, 255, 245), "card_border": (30, 30, 50, 255), "card_text": "#1f1d2b",
         "card_muted": "#6b6880", "good": "#18b26b", "bad": "#ff4757", "neutral": "#ff9f1a",
